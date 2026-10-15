@@ -1,0 +1,23 @@
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Variáveis de ambiente e segredos
+.env
+
+# Banco SQLite gerado localmente e índices vetoriais locais
+data/*.db
+data/*.sqlite3
+data/chroma_db/
+
+# Arquivos de sistema e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
