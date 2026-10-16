@@ -14,7 +14,10 @@ __pycache__/
 # Banco SQLite gerado localmente e índices vetoriais locais
 data/*.db
 data/*.sqlite3
+**/data/*.db
+**/data/*.sqlite3
 data/chroma_db/
+**/chroma_db/
 
 # Arquivos de sistema e IDEs
 .DS_Store

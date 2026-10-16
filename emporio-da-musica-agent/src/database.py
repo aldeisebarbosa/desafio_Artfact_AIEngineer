@@ -7,7 +7,18 @@ import unicodedata
 from pathlib import Path
 import pandas as pd
 
-DATA_DIR = Path("data")
+def _find_data_dir() -> Path:
+    candidates = [
+        Path(__file__).resolve().parent.parent / "data",
+        Path("data"),
+        Path("emporio-da-musica-agent/data"),
+    ]
+    for p in candidates:
+        if p.exists() and p.is_dir():
+            return p
+    return Path(__file__).resolve().parent.parent / "data"
+
+DATA_DIR = _find_data_dir()
 DB_PATH = DATA_DIR / "emporio.db"
 
 STATUS_PT = {
