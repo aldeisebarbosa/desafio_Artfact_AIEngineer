@@ -143,6 +143,7 @@ def _format_product_row(r: sqlite3.Row) -> dict[str, Any]:
         "description": r["description"],
         "specs": r["specs"],
         "price_original_brl": r["price_brl"],
+        "price_brl": r["price_brl"],
         "price_effective_brl": r["effective_price_brl"],
         "pix_price_brl": r["pix_price_brl"],
         "has_active_promo": bool(r["has_active_promo"]),
