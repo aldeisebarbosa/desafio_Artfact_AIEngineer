@@ -199,21 +199,30 @@ class EmporioAgent:
         # 2. Detecção de dúvidas sobre Devolução / Arrependimento / Trocas / Garantia
         return_keywords = ["devolver", "devolucao", "arrependi", "arrepender", "troca", "trocar", "defeito", "garantia"]
         if any(kw in norm_msg for kw in return_keywords):
-            if "arrepend" in norm_msg or "devolver" in norm_msg:
+            if any(term in norm_msg for term in ["arrepend", "devolver", "devoluc", "reembols", "estorno", "dinheiro"]):
                 return (
                     "Olá! Compreendemos perfeitamente a sua situação e pode ficar totalmente tranquilo(a)! 🤝\n\n"
                     "De acordo com as nossas políticas e o Código de Defesa do Consumidor (Artigo 49):\n"
                     "• Em compras online ou remotas, você tem até **7 (sete) dias corridos** após o recebimento para solicitar a devolução por arrependimento, sem necessidade de qualquer justificativa.\n"
                     "• O produto deve estar em sua embalagem original, sem sinais de uso, junto de todos os manuais e eventuais itens inclusos.\n"
-                    "• O frete de devolução é **por nossa conta** e o reembolso é feito de forma integral na mesma modalidade de pagamento original em até 10 dias úteis.\n\n"
+                    "• O frete de devolução é **100% por nossa conta** (geramos uma autorização de postagem reversa sem custos para você).\n"
+                    "• O reembolso é feito de forma integral na mesma modalidade de pagamento original em até 10 dias úteis após a chegada e conferência técnica do instrumento.\n\n"
                     "Se o seu pedido estiver dentro desse prazo de 7 dias, basta nos informar o número do pedido ou seu CPF/nome para iniciarmos o procedimento com a nossa equipe de atendimento!"
                 )
             elif "defeito" in norm_msg or "garantia" in norm_msg:
                 return (
                     "Olá! Se o seu instrumento apresentou algum defeito, estamos aqui para te auxiliar da melhor forma! 🛠️\n\n"
-                    "• **Até 30 dias corridos** da compra ou recebimento: a troca por defeito de fabricação é feita diretamente aqui pela Empório da Música.\n"
+                    "• **Até 30 dias corridos** da compra ou recebimento: a troca por defeito de fabricação é feita diretamente aqui pela Empório da Música com envio sem custos.\n"
                     "• **Após 30 dias**: intermediamos o acionamento da garantia junto ao fabricante (que costuma variar de 6 meses a 2 anos, além dos 90 dias de garantia legal do CDC).\n\n"
                     "Poderia nos passar o número do seu pedido ou os detalhes do ocorrido para te orientarmos no passo a passo?"
+                )
+            elif "troca" in norm_msg or "trocar" in norm_msg:
+                return (
+                    "Olá! Para trocas de instrumentos por outro modelo ou cor, nosso procedimento é super simples:\n\n"
+                    "• Prazo de até **30 dias corridos** após a compra para produtos intactos, com embalagem original e nota fiscal.\n"
+                    "• Você pode efetuar a troca presencialmente em nossa loja na Rua 14 de Maio ou solicitar a troca remota via Correios/Jadlog.\n"
+                    "• Se o novo modelo tiver valor diferente, você apenas complementa a diferença ou recebe um vale-compras com a sobra.\n\n"
+                    "Qual produto você gostaria de trocar e por qual modelo tem interesse?"
                 )
 
         # 3. Detecção de dúvidas sobre Informações da Loja, Endereço e Horários
