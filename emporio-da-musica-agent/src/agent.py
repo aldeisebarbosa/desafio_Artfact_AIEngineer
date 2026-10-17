@@ -232,12 +232,16 @@ class EmporioAgent:
                 f"Venha tomar um café conosco e testar os instrumentos pessoalmente!"
             )
 
-        # 4. Detecção de consulta sobre Pedidos / Rastreamento / Entrega
-        order_keywords = ["pedido", "rastreio", "rastreamento", "status", "entrega", "onde esta"]
+        # 4. Detecção de consulta sobre Pedidos / Rastreamento
+        is_order_intent = (
+            any(kw in norm_msg for kw in ["pedido", "rastreio", "rastreamento", "rastrear"])
+            or ("status" in norm_msg and "pedido" in norm_msg)
+            or ("onde esta" in norm_msg and "pedido" in norm_msg)
+        )
         extracted_digits = re.findall(r"\b\d{1,5}\b", user_message)
         tracking_match = re.findall(r"\bBR[A-Z0-9]+BR\b", user_message.upper())
 
-        if any(kw in norm_msg for kw in order_keywords) or tracking_match:
+        if (is_order_intent and ("pronta entrega" not in norm_msg)) or tracking_match:
             search_key = ""
             if extracted_digits:
                 search_key = extracted_digits[0]

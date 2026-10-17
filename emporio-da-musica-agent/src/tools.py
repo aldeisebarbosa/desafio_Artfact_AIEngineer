@@ -215,16 +215,20 @@ def search_order(identifier: str) -> Optional[dict[str, Any]]:
 
     # 3. Busca por cliente (nome, email ou telefone)
     norm = f"%{normalize_text(identifier)}%"
+    digits = re_sub_digits(identifier)
+    phone_filter = f"%{digits}%" if len(digits) >= 8 else "__NO_PHONE__"
+    raw_ident = identifier.strip()
+
     cursor.execute(
         """
         SELECT o.*, c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.city as customer_city
         FROM orders o
         JOIN customers c ON o.customer_id = c.customer_id
-        WHERE c.name_norm LIKE ? OR c.email_norm LIKE ? OR c.phone_digits LIKE ?
+        WHERE (LENGTH(?) >= 3 AND (c.name_norm LIKE ? OR c.email_norm LIKE ?)) OR c.phone_digits LIKE ?
         ORDER BY o.order_date DESC
         LIMIT 1
         """,
-        (norm, norm, f"%{re_sub_digits(identifier)}%")
+        (raw_ident, norm, norm, phone_filter)
     )
     row = cursor.fetchone()
     if row:
