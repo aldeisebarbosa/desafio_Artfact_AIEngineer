@@ -278,12 +278,16 @@ class EmporioAgent:
 
         is_price_query = any(kw in norm_msg for kw in ["custa", "quanto e", "preco de", "valor do", "takamine", "gd20", "c40", "tw-25", "tw25"])
         if specific_prod_match or is_price_query:
-            prod_query = user_message
-            for rm in ["quanto custa", "qual o valor", "qual o preco", "quanto e", "o violao", "a guitarra", "o"]:
-                prod_query = prod_query.lower().replace(rm, "")
-            prod_query = prod_query.strip(" ?!,.")
-
-            prod = get_product_details(prod_query if prod_query else user_message)
+            cleaned_query = re.sub(
+                r"\b(quanto\s+custa|qual\s+o\s+valor|qual\s+o\s+preco|quanto\s+e|o|a|os|as|do|da|de|violao|guitarra|baixo|teclado|bateria|aceita|parcelamento|sem\s+juros|tem|em\s+estoque|sobre)\b",
+                " ",
+                user_message,
+                flags=re.IGNORECASE,
+            )
+            cleaned_query = " ".join(cleaned_query.split()).strip(" ?!,.")
+            prod = get_product_details(cleaned_query if cleaned_query else user_message)
+            if not prod and specific_prod_match:
+                prod = get_product_details(specific_prod_match)
             if prod:
                 stock_msg = f"Em estoque ({prod['stock_quantity']} unidades disponíveis)" if prod["is_available"] else "Temporariamente esgotado"
                 promo_tag = ""

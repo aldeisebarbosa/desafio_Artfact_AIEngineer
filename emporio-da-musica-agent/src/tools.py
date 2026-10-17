@@ -110,7 +110,7 @@ def get_product_details(product_query: str) -> Optional[dict[str, Any]]:
         if row:
             return _format_product_row(row)
 
-    # Busca textual por nome
+    # 1. Busca direta pela frase/nome
     norm = f"%{normalize_text(product_query)}%"
     cursor.execute(
         """
@@ -124,6 +124,24 @@ def get_product_details(product_query: str) -> Optional[dict[str, Any]]:
     row = cursor.fetchone()
     if row:
         return _format_product_row(row)
+
+    # 2. Busca por interseção de tokens significativos
+    tokens = [t for t in normalize_text(product_query).split() if len(t) > 1]
+    if tokens:
+        where_tokens = " AND ".join(["search_blob LIKE ?" for _ in tokens])
+        params = [f"%{t}%" for t in tokens]
+        cursor.execute(
+            f"""
+            SELECT * FROM products 
+            WHERE {where_tokens}
+            ORDER BY effective_price_brl ASC 
+            LIMIT 1
+            """,
+            params
+        )
+        row = cursor.fetchone()
+        if row:
+            return _format_product_row(row)
 
     return None
 
