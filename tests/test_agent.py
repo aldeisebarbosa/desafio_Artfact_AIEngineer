@@ -11,7 +11,9 @@ AGENT_DIR = Path(__file__).resolve().parent.parent / "emporio-da-musica-agent"
 if str(AGENT_DIR) not in sys.path:
     sys.path.insert(0, str(AGENT_DIR))
 
+# pyrefly: ignore[missing-import]
 from src.database import get_db_connection, calculate_max_installments
+# pyrefly: ignore[missing-import]
 from src.tools import (
     search_products,
     get_product_details,
@@ -19,6 +21,7 @@ from src.tools import (
     get_store_info,
     query_policies,
 )
+# pyrefly: ignore[missing-import]
 from src.agent import EmporioAgent
 
 

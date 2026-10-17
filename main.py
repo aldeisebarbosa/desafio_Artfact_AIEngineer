@@ -11,6 +11,7 @@ from pathlib import Path
 
 # Carrega variáveis de ambiente de .env se existir
 try:
+    # pyrefly: ignore[missing-import]
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
@@ -24,7 +25,9 @@ if str(AGENT_DIR) not in sys.path:
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
+# pyrefly: ignore[missing-import]
 from src.agent import EmporioAgent
+# pyrefly: ignore[missing-import]
 from src.database import get_db_connection
 
 
